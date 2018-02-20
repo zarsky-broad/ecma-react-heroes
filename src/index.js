@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom'
-import Main from './components/Main'
+import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
 
 
-ReactDOM.render(Main({ title: 'ecma-react-heroes' }),
+ReactDOM.render(App({ title: 'ecma-react-heroes' }),
   document.getElementById('root'))
 registerServiceWorker()

@@ -24,4 +24,4 @@ Nav.addNavRoute({
   path: '/#dashboard'
 })
 
-export default (props) => h(HeroDashboard, props);
+export default props => h(HeroDashboard, props);
