@@ -25,7 +25,7 @@ const Redirect = (props) => h(rrRedirect, props)
 
 export { addNavRoute, HashRouter, Link, Redirect }
 
-let allPathHandlers = []
+let allPathHandlers = {}
 
 const defPath = function (k, handler) {
   console.assert(_.has(handler, 'regex'))
@@ -59,9 +59,11 @@ const findMatches = function (windowHash, checkingRedirects) {
   _.filter(
     _.map(checkingRedirects ?
       allRedirects :
-      allPathHandlers,
-      function (value) {
-
-      })
-    , _.isObject)
+      _.pairs(allPathHandlers),
+      function (x) {
+        const { k, handler } = checkingRedirects ?
+          [null, x] :
+          x
+      }),
+    _.isObject)
 }
