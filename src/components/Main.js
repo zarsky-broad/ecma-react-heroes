@@ -1,12 +1,12 @@
 import _ from 'underscore'
 import { Component, Fragment } from 'react'
 import { a, h, h1, nav } from 'react-hyperscript-helpers'
-import * as Nav from '../nav'
 import * as Style from '../style'
+
 
 class Main extends Component {
   render() {
-    const makeNavLink = function (props, label) {
+    const makeNavLink = function(props, label) {
       return Style.addHoverStyle(a,
         _.extend(
           {
@@ -16,9 +16,7 @@ class Main extends Component {
               backgroundColor: '#eee', borderRadius: 4,
               textDecoration: 'none'
             },
-            hoverStyle: {
-              color: '#039be5', backgroundColor: Style.colors.lightBluish
-            }
+            hoverStyle: { color: '#039be5', backgroundColor: Style.colors.lightBluish }
           },
           props),
         label)
@@ -29,8 +27,7 @@ class Main extends Component {
       nav({ style: { paddingTop: 10 } }, [
         makeNavLink({ href: '#dashboard' }, 'Dashboard'),
         makeNavLink({ href: '#list' }, 'Heroes')
-      ]),
-      Nav.HashRouter()])
+      ])])
   }
 }
 
