@@ -56,7 +56,7 @@ const findMatches = function (windowHash, checkingRedirects) {
   const workingHash = windowHash || ''
   const cleaned = decodeURI(workingHash.substring(1))
 
-  _.filter(
+  return _.filter(
     _.map(checkingRedirects ?
       allRedirects :
       _.pairs(allPathHandlers),
@@ -64,6 +64,31 @@ const findMatches = function (windowHash, checkingRedirects) {
         const { k, handler } = checkingRedirects ?
           [null, x] :
           x
+        if (handler.regex.test(cleaned)) {
+          handler.key = k
+          handler.makeProps = () => handler.makeProps.apply(_.rest(cleaned.match(handler.regex)))
+          return handler
+        }
       }),
-    _.isObject)
+    (x) => (x !== false))
+}
+
+const findPathHandler = function (windowHash) {
+  const matchingHandlers = findMatches(windowHash, false)
+  console.assert(matchingHandlers.length <= 1, `Multiple handlers matched path: ${_.map(matchingHandlers, (x) => x.key)}`)
+  return _.first(matchingHandlers)
+}
+
+const getPath = function (k, ...args) {
+  const handler = allPathHandlers[k]
+  console.assert(handler, `No handler found for key ${k}. Valid path keys are: ${_.allKeys(allPathHandlers)}`)
+  return encodeURI(handler.makePath.apply(args))
+}
+
+const getLink = function (k, ...args) {
+  return `#${getPath.apply([k].concat(args))}`
+}
+
+const goToPath = function (k, ...args) {
+  window.location.hash = getPath.apply([k].concat(args))
 }
