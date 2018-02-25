@@ -51,7 +51,7 @@ const findMatches = function(windowHash, checkingRedirects) {
 const findPathHandler = function(windowHash) {
   const matchingHandlers = findMatches(windowHash, false)
   console.assert(matchingHandlers.length <= 1,
-    `Multiple handlers matched path: ${_.map(matchingHandlers, x => x.key)}`)
+    `Multiple handlers matched path: ${_.map(matchingHandlers, x => x)}`)
   return _.first(matchingHandlers)
 }
 

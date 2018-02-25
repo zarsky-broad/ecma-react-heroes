@@ -1,33 +1,48 @@
 import _ from 'underscore'
+import update from 'immutability-helper'
 import { Component, Fragment } from 'react'
 import { a, div, h, h1, h2, nav } from 'react-hyperscript-helpers'
-import * as Style from '../style'
+import * as Dashboard from './Dashboard'
 import * as Nav from '../nav'
-import update from 'immutability-helper'
+import * as Style from '../style'
 
 
 const initNavPaths = () => {
   Nav.clearPaths()
+  Dashboard.addNavPaths()
 }
 
 /*
 * title - Title of app.
 */
-class Main extends Component {
-  handleHashChange() {
-    if (!Nav.executeRedirects(window.location.hash))
-      this.setState(prevState => update(prevState,
-        { windowHash: { $set: window.location.hash } }))
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+
+    _.bind(this.handleHashChange, this)
   }
 
-  static componentWillMount() {
+  handleHashChange() {
+    if (!Nav.executeRedirects(window.location.hash)) {
+      this.setState(prevState =>
+        update(prevState,
+          {
+            windowHash: { $set: window.location.hash },
+            isLoaded: { $set: true } // FIXME: move when loading for real...
+          })
+      )
+    }
+  }
+
+  componentWillMount() {
     initNavPaths()
     this.handleHashChange()
   }
 
   render() {
     const { windowHash, isLoaded } = this.state
-    const { component, makeProps } = Nav.findPathHandler(windowHash)
+    const { component, makeProps } = Nav.findPathHandler(windowHash) || {}
 
     const makeNavLink = function(props, label) {
       return Style.addHoverStyle(a,
@@ -63,6 +78,15 @@ class Main extends Component {
         activeThing)
     ])
   }
+
+  componentDidMount() {
+    this.hashChangeListener = this.handleHashChange
+    window.addEventListener('hashchange', this.hashChangeListener)
+  }
+
+  componentWillReceiveProps() { initNavPaths() }
+
+  componentWillUnmount() { window.removeEventListener('hashchange', this.hashChangeListener) }
 }
 
-export default props => h(Main, props)
+export default props => h(App, props)
