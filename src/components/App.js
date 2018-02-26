@@ -23,7 +23,7 @@ class App extends Component {
     _.bind(this.handleHashChange, this)
   }
 
-  handleHashChange() {
+  handleHashChange = () => {
     if (!Nav.executeRedirects(window.location.hash)) {
       this.setState(prevState =>
         update(prevState,
@@ -61,10 +61,11 @@ class App extends Component {
     }
 
     let activeThing
-    if (!isLoaded)
+    if (!isLoaded) {
       activeThing = h2({}, 'Loading heroes...')
-    else if (component)
+    } else if (component) {
       activeThing = component(makeProps())
+    }
 
 
     return h(Fragment, [

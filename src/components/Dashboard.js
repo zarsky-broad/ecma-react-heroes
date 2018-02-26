@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { div } from 'react-hyperscript-helpers'
+import { div, h } from 'react-hyperscript-helpers'
 import * as Nav from '../nav'
 
 
@@ -18,7 +18,7 @@ const addNavPaths = () => {
   Nav.defPath(
     'dashboard',
     {
-      component: HeroDashboard,
+      component: props => h(HeroDashboard, props),
       regex: /dashboard/,
       makeProps: () => {},
       makePath: () => 'dashboard'
