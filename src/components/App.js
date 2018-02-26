@@ -75,8 +75,9 @@ class App extends Component {
         makeNavLink({ href: '#dashboard' }, 'Dashboard'),
         makeNavLink({ href: '#list' }, 'Heroes')
       ]),
-      div({ style: { paddingTop: 10 } },
-        activeThing)
+      div({ style: { paddingTop: 10 } }, [
+        activeThing
+      ])
     ])
   }
 
