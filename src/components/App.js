@@ -19,8 +19,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-
-    _.bind(this.handleHashChange, this)
   }
 
   handleHashChange = () => {
